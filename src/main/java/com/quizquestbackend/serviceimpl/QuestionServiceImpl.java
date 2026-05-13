@@ -58,8 +58,9 @@ public class QuestionServiceImpl implements QuestionService {
         if (dto.getOptions() == null || dto.getOptions().size() != 4) {
             throw new IllegalArgumentException("Exactly 4 options are required");
         }
-        if (!dto.getOptions().contains(dto.getCorrectAnswer())) {
-            throw new IllegalArgumentException("Correct answer must be one of the options");
+        int answer = dto.getCorrectAnswer();
+        if (answer < 0 || answer > 3) {
+            throw new IllegalArgumentException("Correct answer must be between 0 and 3");
         }
         Question existing = repo.findById(id) .orElseThrow(() -> new IllegalArgumentException("Question not found"));
         existing.setQuestion(dto.getQuestion());

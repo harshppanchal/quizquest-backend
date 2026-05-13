@@ -66,7 +66,7 @@ public class QuizServiceImpl implements QuizService {
             Question question = questionRepository.findById(entry.getKey())
                     .orElseThrow(() -> new IllegalArgumentException("Question not found"));
 
-            if (question.getCorrectAnswer().equalsIgnoreCase(entry.getValue())) {
+            if (question.getCorrectAnswer()== entry.getValue()) {
                 score++;
             }
         }

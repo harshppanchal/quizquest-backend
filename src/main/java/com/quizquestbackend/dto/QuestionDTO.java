@@ -11,7 +11,7 @@ public class QuestionDTO {
     private Long id;
     private String question;
     private List<String> options;
-    private String correctAnswer;
+    private int correctAnswer;
     private String category;
     private String difficulty;
 }

@@ -31,7 +31,7 @@ public class Question {
     @Column(name = "option_d")
     private String optionD;
     @Column(name = "correct_answer")
-    private String correctAnswer;
+    private int correctAnswer;
     private String difficulty;
     private String category;
 }
