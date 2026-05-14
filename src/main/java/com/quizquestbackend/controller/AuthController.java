@@ -1,6 +1,7 @@
 package com.quizquestbackend.controller;
 
 import com.quizquestbackend.dto.*;
+import com.quizquestbackend.exception.DuplicateResourceException;
 import com.quizquestbackend.mapper.AuthUserMapper;
 import com.quizquestbackend.security.CustomUserDetails;
 import com.quizquestbackend.security.JwtUtil;
@@ -68,9 +69,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public ApiResponse<UserResponseDTO> register(@Valid @RequestBody UserRegisterDTO dto) {
-
-        UserResponseDTO user = authService.register(dto);
-
-        return new ApiResponse<>(true,"User registered successfully",user);
+    	UserResponseDTO user = authService.register(dto);
+    	try {
+    		return new ApiResponse<>(true,"User registered successfully",user);
+        } catch(DuplicateResourceException e){
+        	return new ApiResponse<>(true,"User name already present",user);
+        }
     }
 }
