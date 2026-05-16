@@ -18,24 +18,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class QuizAttempt {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private int score;
     private int correctAnswers;
     private int totalQuestions;
-
     private String category;
     private String difficulty;
-
     private LocalDateTime attemptedAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
     @PrePersist
     void onCreate() {
         this.attemptedAt = LocalDateTime.now();

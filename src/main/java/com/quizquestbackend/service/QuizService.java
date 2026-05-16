@@ -6,7 +6,6 @@ import com.quizquestbackend.dto.QuizResultDTO;
 import com.quizquestbackend.dto.QuizSubmissionDTO;
 
 public interface QuizService {
-
     List<QuestionDTO> startQuiz(String category,String difficulty,int numberOfQuestions);
     QuizResultDTO submitQuiz(QuizSubmissionDTO submission);
 }

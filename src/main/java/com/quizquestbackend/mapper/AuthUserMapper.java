@@ -6,12 +6,7 @@ import com.quizquestbackend.security.CustomUserDetails;
 
 @Component
 public class AuthUserMapper {
-
     public AuthUserDTO fromPrincipal(CustomUserDetails user) {
-        return new AuthUserDTO(
-            user.getId(),
-            user.getUsername(),
-            user.getRole()
-        );
+        return new AuthUserDTO(user.getId(),user.getUsername(),user.getRole());
     }
 }

@@ -14,33 +14,26 @@ import jakarta.validation.Valid;
 @RequestMapping("/admin/questions")
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminQuestionController {
-
     private final QuestionService service;
-
     public AdminQuestionController(QuestionService service) {
         this.service = service;
     }
-   
     @GetMapping
     public Page<QuestionDTO> getAllQuestions(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "10") int size,String category,String difficulty) {
         return service.getAllQuestions(page, size,category,difficulty);
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<QuestionDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(service.getQuestionById(id));
     }
-    
     @PostMapping
     public ResponseEntity<QuestionDTO> add(@Valid @RequestBody AdminQuestionDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addQuestion(dto));
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<QuestionDTO> update(@PathVariable Long id,@Valid @RequestBody AdminQuestionDTO dto) {
         return ResponseEntity.ok(service.updateQuestion(id, dto));
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteQuestion(id);

@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-
     @Query(
         value = """
             SELECT * FROM questions
@@ -43,6 +42,5 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findRandomAll(@Param("limit") int limit);
     Page<Question> findByCategoryAndDifficulty(String category,String difficulty,Pageable pageable);
     Page<Question> findByCategory(String category, Pageable pageable);
-    Page<Question> findByDifficulty(String difficulty, Pageable pageable);
-    
+    Page<Question> findByDifficulty(String difficulty, Pageable pageable); 
 }

@@ -1,7 +1,6 @@
 package com.quizquestbackend.controller;
 
 import com.quizquestbackend.dto.*;
-import com.quizquestbackend.exception.DuplicateResourceException;
 import com.quizquestbackend.mapper.AuthUserMapper;
 import com.quizquestbackend.security.CustomUserDetails;
 import com.quizquestbackend.security.JwtUtil;
@@ -17,22 +16,18 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
     private final AuthenticationManager authManager;
     private final JwtUtil jwtUtil;
     private final AuthService authService;
     private final AuthUserMapper authUserMapper;
-
     public AuthController(AuthenticationManager authManager,JwtUtil jwtUtil,AuthService authService,AuthUserMapper authUserMapper) {
         this.authManager = authManager;
         this.jwtUtil = jwtUtil;
         this.authService = authService;
         this.authUserMapper = authUserMapper;
     }
-    // ---------- LOGIN ----------
     @PostMapping("/login")
     public ApiResponse<AuthResultDTO> login(@Valid @RequestBody LoginRequestDTO request) {
-
         Authentication authentication;
         try {
             authentication = authManager.authenticate(  new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword()));
@@ -41,39 +36,27 @@ public class AuthController {
         } catch (DisabledException e) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User account is disabled");
         }
-
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
-
         String token = jwtUtil.generateToken(user.getUsername(),user.getRole().name()); // ADMIN / USER
-
         AuthUserDTO authUser = authUserMapper.fromPrincipal(user);
-
         return new ApiResponse<>(true,"Login successful",new AuthResultDTO(token, authUser));
     }
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me")
     public ApiResponse<AuthUserDTO> me(Authentication authentication) {
-
         if (authentication == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No authentication");
         }
-
         Object principal = authentication.getPrincipal();
         if (!(principal instanceof CustomUserDetails user)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unexpected principal type");
         }
-
         return new ApiResponse<>(true,"Authenticated user",authUserMapper.fromPrincipal(user));
     }
 
     @PostMapping("/register")
     public ApiResponse<UserResponseDTO> register(@Valid @RequestBody UserRegisterDTO dto) {
-    	UserResponseDTO user = authService.register(dto);
-    	try {
-    		return new ApiResponse<>(true,"User registered successfully",user);
-        } catch(DuplicateResourceException e){
-        	return new ApiResponse<>(true,"User name already present",user);
-        }
+        UserResponseDTO user = authService.register(dto);
+        return new ApiResponse<>(true,"User registered successfully",user);
     }
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class QuizSubmissionDTO {
+	private String category;
     private String difficulty;
-    private Map<Long, Integer> answers;
+    private Map<Long, String> answers;
 }

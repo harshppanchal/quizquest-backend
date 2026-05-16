@@ -8,18 +8,21 @@ import com.quizquestbackend.entity.Question;
 
 @Component
 public class QuestionMapper {
-
     public QuestionDTO toDTO(Question q) {
         return new QuestionDTO(
-        	    q.getId(),
-        	    q.getQuestion(),
-        	    List.of(q.getOptionA(), q.getOptionB(), q.getOptionC(), q.getOptionD()),
-        	    q.getCorrectAnswer(),
-        	    q.getCategory(),
-        	    q.getDifficulty()
-        	);
+                q.getId(),
+                q.getQuestion(),
+                List.of(
+                        q.getOptionA(),
+                        q.getOptionB(),
+                        q.getOptionC(),
+                        q.getOptionD()
+                ),
+                q.getCorrectAnswer(),
+                q.getCategory(),
+                q.getDifficulty()
+        );
     }
-
     public Question toEntity(AdminQuestionDTO dto) {
         Question q = new Question();
         q.setQuestion(dto.getQuestion());

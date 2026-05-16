@@ -1,7 +1,6 @@
 package com.quizquestbackend.dto;
 
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,7 +10,7 @@ public class QuestionDTO {
     private Long id;
     private String question;
     private List<String> options;
-    private int correctAnswer;
+    private String correctAnswer;
     private String category;
     private String difficulty;
 }

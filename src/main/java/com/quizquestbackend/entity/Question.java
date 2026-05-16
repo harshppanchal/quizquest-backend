@@ -14,14 +14,11 @@ import lombok.Setter;
 @Setter
 @Table(name = "questions")
 public class Question {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "option")
     private String question;
-    
     @Column(name = "option_a")
     private String optionA;
     @Column(name = "option_b")
@@ -31,7 +28,7 @@ public class Question {
     @Column(name = "option_d")
     private String optionD;
     @Column(name = "correct_answer")
-    private int correctAnswer;
+    private String correctAnswer;
     private String difficulty;
     private String category;
 }

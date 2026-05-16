@@ -9,13 +9,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 public class UserResponseDTO {
-
     @JsonProperty("id")
     private Long id;
-
     @JsonProperty("username")
     private String username;
-
     @JsonProperty("role")
     private String role;
 }

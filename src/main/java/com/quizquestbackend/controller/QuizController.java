@@ -1,7 +1,6 @@
 package com.quizquestbackend.controller;
 
 import java.util.List;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,19 +16,15 @@ import jakarta.validation.Valid;
 @RequestMapping("/quiz")
 public class QuizController {
 	private final QuizService quizService;
-	
 	public QuizController(QuizService quizService) {
 		this.quizService = quizService;
 	}
-	
 	@PostMapping("/start")
 	public List<QuestionDTO> startQuiz(@Valid @RequestBody QuizStartRequestDTO request) {
 	    return quizService.startQuiz(request.getCategory(),request.getDifficulty(),request.getNumberOfQuestions());
 	}
-	
 	@PostMapping("/submit")
 	public QuizResultDTO submitQuiz(@RequestBody QuizSubmissionDTO submission) {
 	    return quizService.submitQuiz(submission);
-	}
-	   
+	}  
 }
