@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,14 +31,19 @@ public class AuthController {
     public ApiResponse<AuthResultDTO> login(@Valid @RequestBody LoginRequestDTO request) {
         Authentication authentication;
         try {
-            authentication = authManager.authenticate(  new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword()));
+            authentication = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword()));
+        } catch (UsernameNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
         } catch (BadCredentialsException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Invalid password");
         } catch (DisabledException e) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User account is disabled");
+        	throw new ResponseStatusException(HttpStatus.FORBIDDEN,"User account is disabled");
         }
+
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
-        String token = jwtUtil.generateToken(user.getUsername(),user.getRole().name()); // ADMIN / USER
+
+        String token = jwtUtil.generateToken(user.getUsername(),user.getRole().name());
         AuthUserDTO authUser = authUserMapper.fromPrincipal(user);
         return new ApiResponse<>(true,"Login successful",new AuthResultDTO(token, authUser));
     }
