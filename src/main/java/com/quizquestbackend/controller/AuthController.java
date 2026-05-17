@@ -33,12 +33,8 @@ public class AuthController {
         try {
             authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword()));
-        } catch (UsernameNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
         } catch (BadCredentialsException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Invalid password");
-        } catch (DisabledException e) {
-        	throw new ResponseStatusException(HttpStatus.FORBIDDEN,"User account is disabled");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Invalid username or password");
         }
 
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
